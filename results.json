@@ -1,0 +1,31 @@
+{
+  "question": "Can a cross-validated learned gate over propagation-depth graph experts beat a fixed uniform gate for node classification on the Cora citation graph under the standard Planetoid split?",
+  "method": "Same three SGC-style depth experts (S^1X, S^2X, S^3X with logistic regression); baseline averages their probabilities uniformly, improved learns a logistic stacking gate on out-of-fold expert log-probabilities from training nodes.",
+  "dataset": {
+    "name": "Cora (Planetoid public split)",
+    "source_url": "https://github.com/kimiyoung/planetoid/raw/master/data/",
+    "n_rows": 2708,
+    "n_train": 140,
+    "n_test": 1000,
+    "same_as_paper": false,
+    "baseline_is_papers_method": false
+  },
+  "metric_name": "test accuracy",
+  "higher_is_better": true,
+  "baseline": "Linear GNN in SGC style: fixed uniform average of logistic-regression experts on S^1X, S^2X and S^3X (S = symmetric-normalised adjacency with self-loops).",
+  "improved": "Same three experts, but the uniform average is replaced by a logistic-regression stacker trained on 5-fold out-of-fold expert log-probabilities of the training nodes; its regularisation is chosen on validation nodes.",
+  "metrics": {
+    "baseline_score": 0.799,
+    "improved_score": 0.8013333333333333,
+    "improvement": 0.0023333333333332984,
+    "baseline_score_std": 0.0,
+    "improved_score_std": 0.003399346342395193,
+    "baseline_f1": 0.7858753052992599,
+    "improved_f1": 0.7908879660731607,
+    "baseline_time_s": 1.164465715333326,
+    "improved_time_s": 6.046681764333338,
+    "expert_C": 100.0,
+    "gate_C": 0.10000000000000002
+  },
+  "notes": "Test set used once, for both models. Expert C is chosen on validation accuracy of the uniform average (shared by both models); the gate C is chosen on validation nodes as the method specifies, not by CV on training nodes. The baseline is deterministic, so its std over seeds is 0; the improved model's seed only changes the out-of-fold folds. With 140 training nodes, out-of-fold experts are trained on 112 nodes, a mismatch with the full-train experts used at test time. Single dataset, single public split; differences of a few tenths of a percent are within noise."
+}
