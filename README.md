@@ -19,6 +19,28 @@ python analysis.py
 
 Results: results are written to results.json (and figures/accuracy_bar.png).
 
+## Results (latest run)
+
+On the Cora public Planetoid split, a standard linear GNN with a fixed uniform mixture of experts reached 79.9% test accuracy, while a cross-validated learned stacking gate reached 80.1%, a gain of about 0.2 points that is within seed noise (std 0.3%).
+
+| Metric | Value |
+|---|---|
+| baseline_score | 0.799 |
+| improved_score | 0.8013 |
+| improvement | 0.002333 |
+| baseline_score_std | 0 |
+| improved_score_std | 0.003399 |
+| baseline_f1 | 0.7859 |
+| improved_f1 | 0.7909 |
+| baseline_time_s | 1.164 |
+| improved_time_s | 6.047 |
+| expert_C | 100 |
+| gate_C | 0.1 |
+
+Run on 2026-10-12. Full output: [results.json](results.json) · [run.log](run.log)
+
+Notes: Test set used once, for both models. Expert C is chosen on validation accuracy of the uniform average (shared by both models); the gate C is chosen on validation nodes as the method specifies, not by CV on training nodes. The baseline is deterministic, so its std over seeds is 0; the improved model's seed only changes the out-of-fold folds. With 140 training nodes, out-of-fold experts are trained on 112 nodes, a mismatch with the full-train experts used at test time. Single dataset, single public split; differences of a few tenths of a percent are within noise.
+
 ## Reference
 
 This project is motivated by the following paper:
